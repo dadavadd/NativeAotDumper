@@ -1,0 +1,11 @@
+ReadProcessMemory
+WriteProcessMemory
+OpenProcess
+
+CreateRemoteThread
+WaitForSingleObject
+TerminateThread
+GetExitCodeThread
+
+VirtualAllocEx
+VirtualFreeEx
