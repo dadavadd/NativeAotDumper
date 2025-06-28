@@ -9,5 +9,5 @@ public readonly struct ReadyToRunInfo
     }
 
     public ReadyToRunHeader Header { get; }
-    public nint ModuleRowsStart { get; }
+    public IntPtr ModuleRowsStart { get; }
 }

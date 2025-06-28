@@ -35,24 +35,24 @@
             // listBox1
             // 
             listBox1.FormattingEnabled = true;
-            listBox1.Location = new Point(12, 12);
+            listBox1.Location = new Point(12, 42);
             listBox1.Name = "listBox1";
-            listBox1.Size = new Size(557, 499);
+            listBox1.Size = new Size(647, 574);
             listBox1.TabIndex = 0;
             // 
             // listBox2
             // 
             listBox2.FormattingEnabled = true;
-            listBox2.Location = new Point(575, 12);
+            listBox2.Location = new Point(665, 12);
             listBox2.Name = "listBox2";
-            listBox2.Size = new Size(566, 499);
+            listBox2.Size = new Size(685, 604);
             listBox2.TabIndex = 1;
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1153, 516);
+            ClientSize = new Size(1362, 630);
             Controls.Add(listBox2);
             Controls.Add(listBox1);
             Name = "MainForm";

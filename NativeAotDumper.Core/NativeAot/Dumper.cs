@@ -14,11 +14,9 @@ public class Dumper : IDisposable
     private readonly IFrozenStringParser _frozenStringParser;
     private readonly IMetadataResolver _metadataResolver;
 
-    private ITypeNameResolver _typeNameResolver = null!;
-
     public IReadOnlyList<ModuleInfoRow> ModuleInfoRows { get; private set; } = null!;
     public IReadOnlyList<FrozenStringEntry> FrozenStrings { get; private set; } = null!;
-    public IReadOnlyDictionary<IntPtr, string> TypeNames { get; private set; } = null!;
+    public IReadOnlyList<RuntimeTypeInfo> RuntimeTypeInfos { get; private set; } = null!;
 
 
     public Dumper(string processName)
@@ -28,32 +26,22 @@ public class Dumper : IDisposable
         _moduleInfoParser = new ModuleInfoParser(_reader);
         _frozenStringParser = new FrozenStringParser(_reader);
         _metadataResolver = new MetadataResolver(_reader);
+
+        Run();
     }
 
-    public void Run()
+    private void Run()
     {
         var rtrInfo = _rtrParser.Find();
 
         ModuleInfoRows = _moduleInfoParser.Parse(rtrInfo) ?? throw new NullReferenceException($"{nameof(ModuleInfoRows)} is null");
         FrozenStrings = _frozenStringParser.ParseStrings(ModuleInfoRows) ?? throw new NullReferenceException($"{nameof(FrozenStrings)} is null");
-        _typeNameResolver = new TypeNameResolver(_reader, _frozenStringParser.AotRuntimeInfo) ?? throw new NullReferenceException($"{nameof(FrozenStrings)} is null");
 
-        var allMethodTables = _metadataResolver.ParseMetadata(ModuleInfoRows);
-
-        TypeNames = _typeNameResolver.ResolveNamesFromVTables(allMethodTables);
-    }
-
-    public string ResolveTypeNameFromVTable(IntPtr vTableAddress)
-    {
-        if (_typeNameResolver == null)
-            throw new InvalidOperationException($"Dumper has not been run yet. Call {nameof(Run)}() before resolving type names.");
-
-        return _typeNameResolver.ResolveNameFromVTable(vTableAddress);
+        RuntimeTypeInfos = _metadataResolver.ParseMetadata(ModuleInfoRows);
     }
 
     public void Dispose()
     {
         _reader.Dispose();
-        _typeNameResolver.Dispose();
     }
 }

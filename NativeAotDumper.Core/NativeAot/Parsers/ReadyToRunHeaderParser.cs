@@ -7,7 +7,7 @@ internal class ReadyToRunHeaderParser : IReadyToRunHeaderParser
 {
     private readonly IProcessMemoryReader _reader;
 
-    private static byte[] RTRDotnet10 = [(byte)'R', (byte)'T', (byte)'R', 0x00, 0x0D];
+    private static byte[] RTRSignature = [(byte)'R', (byte)'T', (byte)'R', 0x00];
 
     public ReadyToRunHeaderParser(IProcessMemoryReader reader)
     {
@@ -16,12 +16,12 @@ internal class ReadyToRunHeaderParser : IReadyToRunHeaderParser
 
     public unsafe ReadyToRunInfo Find()
     {
-        nint headerAddress = nint.Zero;
-        nint moduleInfoRowsStart = nint.Zero;
+        IntPtr headerAddress = IntPtr.Zero;
+        IntPtr moduleInfoRowsStart = IntPtr.Zero;
 
         ReadyToRunHeader readyToRunHeader;
 
-        if ((headerAddress = _reader.FindPatternInMemory(RTRDotnet10)) != nint.Zero)
+        if ((headerAddress = _reader.FindPatternInMemory(RTRSignature)) != IntPtr.Zero)
         {
             readyToRunHeader = _reader.Read<ReadyToRunHeader>(headerAddress);
         }

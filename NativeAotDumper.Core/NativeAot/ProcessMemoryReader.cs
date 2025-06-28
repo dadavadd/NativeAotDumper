@@ -62,7 +62,7 @@ internal class ProcessMemoryReader : IProcessMemoryReader
     {
         var readBuffer = ReadBytes(MainModuleInfo.Start, MainModuleInfo.Size).AsSpan();
 
-        for (int i = 0; i <= readBuffer.Length - pattern.Length; i++)
+        for (int i = readBuffer.Length - pattern.Length; i >= 0; i--)
         {
             if (readBuffer.Slice(i, pattern.Length).SequenceEqual(pattern))
             {
